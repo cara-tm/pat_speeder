@@ -14,4 +14,4 @@ You can take a benefit rendition between 5% (for precompressed pages) and 6% (no
 
 Included automatic server side GZIP compression, if available, gives an average additional benefit of 75%.
 
-This plugin seems to get better results than ask_header up to 0.7% (based on a vanilla default TXP installation).
+This plugin (v 0.7) seems to get **better results** than ask_header (v 0.3.6) **up to 0.7%** (based on a vanilla default TXP installation).
