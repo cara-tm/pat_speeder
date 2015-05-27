@@ -1,6 +1,6 @@
 <?php
 /**
- * @name	          pat_speeder
+ * @name	  pat_speeder
  * @description	  Display page source on one line of code
  * @link 	  http://pat-speeder.cara-tm.com
  * @author	  Patrick LEFEVRE
