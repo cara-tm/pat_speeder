@@ -2,7 +2,7 @@
 
 A Textpattern CMS plugin.
 
-Did you ever seen the source code of the Google main html page? For speed reasons, Google serves its home page into one line of code. The benefit is a server bandwidth gain. So what don't we make the same for ours TXP websites?
+Did you ever seen the source code of the Google main page? For speed reasons, Google serves its home page into one line of code. The benefit is a server bandwidth gain. So what don't we make the same for ours TXP websites?
 
 Just activate this plugin and your page templates will be rendered into one line of code:
 
