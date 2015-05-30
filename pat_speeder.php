@@ -46,12 +46,9 @@ function _pat_speeder_go($buffer)
 
 	foreach($codes as $value) {
 		// except some tags
-		if( preg_match('/<[$value][^>]*>(.*)<\/[$value]>/', $buffer) === false ) {
-			// keep only one space between
-			$buffer = preg_replace('/\s+/', ' ', $buffer);
+		if( preg_match('/<[$value][^>]*>(.*)<\/[$value]>/', $buffer) === false )
 			// remove new lines
 			$buffer = str_replace(PHP_EOL, '', $buffer);
-		}
 	}
 
 	// but keep IE conditional comments
