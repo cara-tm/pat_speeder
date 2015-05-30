@@ -42,7 +42,7 @@ function _pat_speeder_go($buffer)
 	$codes = explode(',', $code);
 
 	// remove spaces between html tags
-	$buffer = preg_replace('/(?:(?<=\>)|(?<=\/\>))\s+(?=\<\/?)/', ' ', $buffer);
+	$buffer = preg_replace('/(?:(?<=\>)|(?<=\/\>))\s+(?=\<\/?)/', '', $buffer);
 
 	foreach($codes as $value) {
 		// except some tags
