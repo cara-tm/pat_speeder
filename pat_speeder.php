@@ -8,16 +8,26 @@
  * @type:         Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      0.7
+ * @version:      0.7.2
  * @license:      GPLv2
  */
 
+/**
+ * This plugin tag registry
+ *
+ */
 if (class_exists('\Textpattern\Tag\Registry')) {
 	Txp::get('\Textpattern\Tag\Registry')
 		->register('pat_speeder');
 }
 
 
+/**
+ * This plugin tag with attributes
+ *
+ * @param  array    Tag attributes
+ * @return boolean  Call for main function
+ */
 function pat_speeder($atts)
 {
 	extract(lAtts(array(
