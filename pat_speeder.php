@@ -8,7 +8,7 @@
  * @type:         Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      0.7.2
+ * @version:      0.7.3
  * @license:      GPLv2
  */
 
@@ -51,22 +51,8 @@ function _pat_speeder_go($buffer)
 {
 	$codes = explode(',', $code);
 
-	// remove spaces between html tags
-	$buffer = preg_replace('/(?:(?<=\>)|(?<=\/\>))\s+(?=\<\/?)/', '', $buffer);
-
-	foreach($codes as $value) {
-		// except some tags
-		if( preg_match('/<[$value][^>]*>(.*)<\/[$value]>/', $buffer) === false )
-			// remove new lines
-			$buffer = str_replace(PHP_EOL, '', $buffer);
-	}
-
-	// but keep IE conditional comments
-	$buffer = preg_replace('/<!(--)([^\[|\|])^(<!-->.*<!--.*-->)/', '', $buffer);
-
-	// and remove CSS & HTML comments
-	$buffer = preg_replace('/\/\*.*?\*\//', '', $buffer);
-	$buffer = preg_replace('/<!--(?!<!)[^\[>].*?-->/', '', $buffer);
+	// remove uncessary elements from the source document
+	$buffer = preg_replace('#(?ix)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b|\z))#', ' ', $buffer);
 
 	// server side compression if available
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
