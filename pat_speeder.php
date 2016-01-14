@@ -53,6 +53,8 @@ function _pat_speeder_go($buffer)
 
 	// remove uncessary elements from the source document
 	$buffer = preg_replace('#(?ix)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b|\z))#', ' ', $buffer);
+	// remove all comments
+	$buffer = preg_replace('/<!--(?!<!)[^\[>].*?-->/', '', $buffer);
 
 	// server side compression if available
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
