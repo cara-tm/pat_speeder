@@ -12,7 +12,7 @@ See the plugin help for attributes details.
 
 **Warning**: This plugin seems not to be compatible with some flash audio players (to be confirmed).
 
-You can take a benefit rendition between 5% (for precompressed pages) and 6% (normal pages) according to Ruud van Melick's observations.
+You can take a benefit rendition between 5% (for precompressed pages) and 6% (normal pages) according to [Ruud van Melick](https://vanmelick.com/)'s observations.
 
 Included automatic server side GZIP compression, if available, gives an average additional benefit of 75%.
 
