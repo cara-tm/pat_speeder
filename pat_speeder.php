@@ -31,13 +31,15 @@ if (class_exists('\Textpattern\Tag\Registry')) {
 function pat_speeder($atts)
 {
 	extract(lAtts(array(
-		'enable' => '1',
-		'gzip'   => '1',
+		'enable' => null,
+		'gzip'   => true,
 		'code'   => 'script,pre,code',
 	),$atts));
 
 	if ($enable)
-		ob_start('_pat_speeder_go');
+		ob_start(function($buffer) use ($gzip, $code) {
+			return _pat_speeder_go($buffer, $gzip, $code);
+		});
 
 }
 
@@ -47,7 +49,7 @@ function pat_speeder($atts)
  * @return string HTML compressed content
  */
 
-function _pat_speeder_go($buffer)
+function _pat_speeder_go($buffer, $gzip, $code)
 {
 	$codes = explode(',', $code);
 
