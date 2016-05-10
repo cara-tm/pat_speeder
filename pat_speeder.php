@@ -72,3 +72,73 @@ function _pat_speeder_go($buffer, $gzip, $code)
 
 	return $buffer;
 }
+
+
+/**
+ * i18n from adi_plugins. Tks ;)
+ * @param   $phrase   $atts
+ */
+function pat_speeder_gTxt($phrase, $atts = array()) {
+// will check installed language strings before embedded English strings - to pick up Textpack
+// - for TXP standard strings gTxt() & pat_speeder_gTxt() are functionally equivalent
+	global $pat_speeder_gTxt;
+
+	if (strpos(gTxt($phrase, $atts), $phrase) !== FALSE) { // no TXP translation found
+		if (array_key_exists($phrase, $pat_speeder_gTxt)) // translation found
+			return strtr($pat_speeder_gTxt[$phrase], $atts);
+		else // last resort
+			return $phrase;
+		}
+	else // TXP translation
+		return gTxt($phrase, $atts);
+}
+
+
+/**
+ * Plugin prefs.
+ *
+ * @param  
+ * @return Insert this plugin prefs into 'txp_prefs' table.
+ */
+function pat_speeder_prefs()
+{
+
+	global $textarray, $pat_speeder_gTxt;
+
+	$textarray['pat_speeder_enable'] = gTxt('pat_speeder_enable');
+	$textarray['pat_speeder_gzip'] = gTxt('pat_speeder_gzip');
+	$textarray['pat_speeder_tags'] = gTxt('pat_speeder_tags');
+
+	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_enable'"))
+		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_enable', val='0', type=1, event='admin', html='yesnoradio', position=24");
+
+	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_gzip'"))
+		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_gzip', val='0', type=1, event='admin', html='yesnoradio', position=25");
+
+	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_tags'"))
+		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
+
+	safe_repair('txp_plugin');
+
+}
+
+
+/**
+ * Delete plugin prefs & language strings.
+ *
+ * @param
+ * @return Delete this plugin prefs.
+ */
+function pat_speeder_cleanup()
+{
+
+	// Array of tables & rows to be removed
+	$els = array('txp_prefs' => 'pat_speeder', 'txp_lang' => 'pat_speeder');
+
+	// Process actions
+	foreach ($els as $table => $row) {
+		safe_delete($table, "name LIKE '".str_replace('_', '\_', $row)."\_%'");
+		safe_repair($table);
+	}
+
+}
