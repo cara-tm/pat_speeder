@@ -18,6 +18,6 @@ pat_speeder_tags => Etiquetas de lista para protegerlo de la pat_speeder
 
 #prefs
 #@language fr-fr
-pat_speeder_enable => Activer pat_speeder?
-pat_speeder_gzip => Activer la compression Gzip pour pat_speeder?
+pat_speeder_enable => Activer pat_speeder ?
+pat_speeder_gzip => Activer la compression Gzip pour pat_speeder ?
 pat_speeder_tags => Liste de balises à exclure de pat_speeder
