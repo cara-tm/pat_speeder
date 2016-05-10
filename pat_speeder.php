@@ -23,6 +23,28 @@ if (class_exists('\Textpattern\Tag\Registry')) {
 
 
 /**
+ * Callbacks for admin side
+ * 
+ */
+if (txpinterface == 'admin')
+{
+
+	global $pat_speeder_gTxt;
+
+	register_callback('pat_speeder_prefs', 'prefs', '', 1);
+	register_callback('pat_speeder_cleanup', 'plugin_lifecycle.pat_speeder', 'deleted');
+
+	// Default plugin Textpack.
+	$pat_speeder_gTxt = array(
+		'pat_speeder_enable' => 'Activate pat_speeder?',
+		'pat_speeder_gzip' => 'Active Gzip compression for pat_speeder?',
+		'pat_speeder_tags' => 'Tags protection from pat_speeder',
+	);
+
+}
+
+
+/**
  * This plugin tag with attributes
  *
  * @param  array    Tag attributes
