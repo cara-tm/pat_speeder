@@ -8,7 +8,7 @@
  * @type:         Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      0.7.3
+ * @version:      0.7.4
  * @license:      GPLv2
  */
 
