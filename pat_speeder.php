@@ -52,13 +52,15 @@ if (txpinterface == 'admin')
  */
 function pat_speeder($atts)
 {
+	global $prefs;
+
 	extract(lAtts(array(
-		'enable' => null,
-		'gzip'   => true,
-		'code'   => 'script,svg,pre,code',
+		'enable' => true,
+		'gzip'   => $prefs['pat_speeder_gzip'],
+		'code'   => $prefs['pat_speeder_tags'],
 	),$atts));
 
-	if ($enable)
+	if ( $enable || ($prefs['pat_speeder_enable'] && false != $enable) )
 		ob_start(function($buffer) use ($gzip, $code) {
 			return _pat_speeder_go($buffer, $gzip, $code);
 		});
