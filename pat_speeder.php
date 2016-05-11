@@ -142,7 +142,7 @@ function pat_speeder_prefs()
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_tags'"))
 		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
 
-	safe_repair('txp_plugin');
+	safe_repair('txp_prefs');
 
 }
 
