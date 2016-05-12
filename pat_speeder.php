@@ -60,7 +60,7 @@ function pat_speeder($atts)
 		'code'   => $prefs['pat_speeder_tags'],
 	),$atts));
 
-	if ( $enable || ($prefs['pat_speeder_enable'] && false != $enable) )
+	if ( $enable || ($prefs['pat_speeder_enable'] && $enable) )
 		ob_start(function($buffer) use ($gzip, $code) {
 			return _pat_speeder_go($buffer, $gzip, $code);
 		});
