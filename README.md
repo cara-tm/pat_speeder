@@ -19,5 +19,5 @@ Included automatic server side GZIP compression, if available, gives an average 
 This plugin (v 0.7) seems to get **better results** than ask_header (v 0.3.6) **up to 0.7%** (based on a vanilla default TXP installation).
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cara-tm/pat-speeder/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 
