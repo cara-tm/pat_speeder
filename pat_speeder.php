@@ -5,10 +5,10 @@
  * @link 	  http://pat-speeder.cara-tm.com
  * @author	  Patrick LEFEVRE
  * @author_email  <patrick[dot]lefevre[at]gmail[dot]com>
- * @type:         Public
+ * @type:         Admin + Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      0.7.4
+ * @version:      0.7.5
  * @license:      GPLv2
  */
 
