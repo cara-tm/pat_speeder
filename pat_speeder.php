@@ -80,7 +80,7 @@ function _pat_speeder_go($buffer, $gzip, $code)
 	// remove uncessary elements from the source document
 	$buffer = preg_replace('/(?ix)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u, ' ', $buffer);
 	// remove all comments
-	$buffer = preg_replace('/<!--([^\[|(googleo)]).*?-->/s', '', $buffer);
+	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
 	// server side compression if available
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
