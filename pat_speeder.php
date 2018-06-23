@@ -80,7 +80,7 @@ function _pat_speeder_go($buffer, $gzip, $code)
 
 	// remove uncessary elements from the source document
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u, ' ', $buffer);
-	// remove all comments but keep Googlebot ones
+	// remove all comments but keep Googlebot and IE conditional ones
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
 	// server side compression if available
