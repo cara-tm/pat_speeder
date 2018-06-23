@@ -78,12 +78,13 @@ function _pat_speeder_go($buffer, $gzip, $code)
 	// List of tags to keep as this
 	$codes = str_replace(',', '|', $code);
 
-	// remove uncessary elements from the source document
+	// Remove uncessary elements from the source document.
+	// (Time processing: 1ms for the default TXP theme with a long text and some scripts added).
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u, ' ', $buffer);
-	// remove all comments but keep Googlebot and IE conditional ones
+	// Remove all comments but keep Googlebot and IE conditional ones
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
-	// server side compression if available
+	// Server side compression if available.
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
 		$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
 		if( function_exists('gzencode') && preg_match('/gzip/i', $encoding) ) {
@@ -104,7 +105,7 @@ function _pat_speeder_go($buffer, $gzip, $code)
  * @param   $phrase   $atts
  */
 function pat_speeder_gTxt($phrase, $atts = array()) {
-// will check installed language strings before embedded English strings - to pick up Textpack
+// Will check installed language strings before embedded English strings - to pick up Textpack
 // - for TXP standard strings gTxt() & pat_speeder_gTxt() are functionally equivalent
 	global $pat_speeder_gTxt;
 
@@ -135,13 +136,13 @@ function pat_speeder_prefs()
 	$textarray['pat_speeder_tags'] = gTxt('pat_speeder_tags');
 
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_enable'"))
-		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_enable', val='0', type=1, event='admin', html='yesnoradio', position=24");
+		safe_insert('txp_prefs', "name='pat_speeder_enable', val='0', type=1, event='admin', html='yesnoradio', position=24");
 
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_gzip'"))
-		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_gzip', val='0', type=1, event='admin', html='yesnoradio', position=25");
+		safe_insert('txp_prefs', "name='pat_speeder_gzip', val='0', type=1, event='admin', html='yesnoradio', position=25");
 
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_tags'"))
-		safe_insert('txp_prefs', "prefs_id=1, name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
+		safe_insert('txp_prefs', "name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
 
 	safe_repair('txp_prefs');
 
@@ -157,10 +158,10 @@ function pat_speeder_prefs()
 function pat_speeder_cleanup()
 {
 
-	// Array of tables & rows to be removed
+	// Array of tables & rows to be removed.
 	$els = array('txp_prefs' => 'pat_speeder', 'txp_lang' => 'pat_speeder');
 
-	// Process actions
+	// Process actions.
 	foreach ($els as $table => $row) {
 		safe_delete($table, "name LIKE '".str_replace('_', '\_', $row)."\_%'");
 		safe_repair($table);
