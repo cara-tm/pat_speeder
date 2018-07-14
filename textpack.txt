@@ -1,23 +1,19 @@
-#prefs
-#@language de-de
+#@pat_speeder
+pat_speeder_enable => Enable pat_speeder?
+pat_speeder_gzip => Enable GZIP compression with pat_speeder?
+pat_speeder_tags => List of tags to protect from pat_speeder:
+#@pat_speeder
+#@language fr
+pat_speeder_enable => Activer pat_speeder ?
+pat_speeder_gzip => Activer la compression Gzip avec pat_speeder ?
+pat_speeder_tags => Liste de balises à protéger de pat_speeder :
+#@pat_speeder
+#@language de
 pat_speeder_enable => Aktivieren Sie pat_speeder?
 pat_speeder_gzip => Aktivieren Sie gzip-Komprimierung für pat_speeder?
-pat_speeder_tags => Stichworte Liste von pat_speeder zu schützen
-
-#prefs
-#@language en-gb, en-us
-pat_speeder_enable => Enable pat_speeder?
-pat_speeder_gzip => Enable Gzip compression for pat_speeder?
-pat_speeder_tags => Tags list to protect from pat_speeder
-
-#prefs
-#@language es-es
+pat_speeder_tags => Stichworte Liste von pat_speeder zu schützen:
+#@pat_speeder
+#@language es
 pat_speeder_enable => Habilitar pat_speeder?
 pat_speeder_gzip => Habilitar la compresión Gzip para pat_speeder?
-pat_speeder_tags => Etiquetas de lista para protegerlo de la pat_speeder
-
-#prefs
-#@language fr-fr
-pat_speeder_enable => Activer pat_speeder ?
-pat_speeder_gzip => Activer la compression Gzip pour pat_speeder ?
-pat_speeder_tags => Liste de balises à exclure de pat_speeder
+pat_speeder_tags => Etiquetas de lista para protegerlo de la pat_speeder:
