@@ -8,7 +8,7 @@
  * @type:         Admin + Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      0.7.5
+ * @version:      1.0
  * @license:      GPLv2
  */
 
@@ -16,31 +16,20 @@
  * This plugin tag registry
  *
  */
-if (class_exists('\Textpattern\Tag\Registry')) {
+if (class_exists('\Textpattern\Tag_Registry')) {
 	Txp::get('\Textpattern\Tag\Registry')
 		->register('pat_speeder');
 }
 
 
 /**
- * Callbacks for admin side
+ * This plugin lifecycle
  * 
  */
 if (txpinterface == 'admin')
 {
-
-	global $pat_speeder_gTxt;
-
-	register_callback('pat_speeder_prefs', 'prefs', '', 1);
+	register_callback('pat_speeder_prefs', 'plugin_lifecycle.pat_speeder', 'installed');
 	register_callback('pat_speeder_cleanup', 'plugin_lifecycle.pat_speeder', 'deleted');
-
-	// Default plugin Textpack.
-	$pat_speeder_gTxt = array(
-		'pat_speeder_enable' => 'Activate pat_speeder?',
-		'pat_speeder_gzip' => 'Active Gzip compression for pat_speeder?',
-		'pat_speeder_tags' => 'Tags protection from pat_speeder',
-	);
-
 }
 
 
@@ -52,6 +41,7 @@ if (txpinterface == 'admin')
  */
 function pat_speeder($atts)
 {
+
 	global $prefs;
 
 	extract(lAtts(array(
@@ -60,10 +50,11 @@ function pat_speeder($atts)
 		'code'   => $prefs['pat_speeder_tags'],
 	),$atts));
 
-	if ( $enable || ($prefs['pat_speeder_enable'] && $enable) )
+	if ( $enable || ($prefs['pat_speeder_enable'] && $enable) ) {
 		ob_start(function($buffer) use ($gzip, $code) {
 			return _pat_speeder_go($buffer, $gzip, $code);
 		});
+	}
 
 }
 
@@ -75,16 +66,15 @@ function pat_speeder($atts)
 
 function _pat_speeder_go($buffer, $gzip, $code)
 {
-	// List of tags to keep as this
+
 	$codes = str_replace(',', '|', $code);
 
-	// Remove uncessary elements from the source document.
-	// (Time processing: 1ms for the default TXP theme with a long text and some scripts added).
-	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u, ' ', $buffer);
-	// Remove all comments but keep Googlebot and IE conditional ones
+	// remove uncessary elements from the source document
+	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', ' ', $buffer);
+	// remove all comments except google ones
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
-	// Server side compression if available.
+	// server side compression if available
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
 		$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
 		if( function_exists('gzencode') && preg_match('/gzip/i', $encoding) ) {
@@ -96,27 +86,8 @@ function _pat_speeder_go($buffer, $gzip, $code)
 		}
 	}
 
+
 	return $buffer;
-}
-
-
-/**
- * i18n from adi_plugins. Tks ;)
- * @param   $phrase   $atts
- */
-function pat_speeder_gTxt($phrase, $atts = array()) {
-// Will check installed language strings before embedded English strings - to pick up Textpack
-// - for TXP standard strings gTxt() & pat_speeder_gTxt() are functionally equivalent
-	global $pat_speeder_gTxt;
-
-	if (strpos(gTxt($phrase, $atts), $phrase) !== FALSE) { // no TXP translation found
-		if (array_key_exists($phrase, $pat_speeder_gTxt)) // translation found
-			return strtr($pat_speeder_gTxt[$phrase], $atts);
-		else // last resort
-			return $phrase;
-		}
-	else // TXP translation
-		return gTxt($phrase, $atts);
 }
 
 
@@ -129,12 +100,6 @@ function pat_speeder_gTxt($phrase, $atts = array()) {
 function pat_speeder_prefs()
 {
 
-	global $textarray, $pat_speeder_gTxt;
-
-	$textarray['pat_speeder_enable'] = gTxt('pat_speeder_enable');
-	$textarray['pat_speeder_gzip'] = gTxt('pat_speeder_gzip');
-	$textarray['pat_speeder_tags'] = gTxt('pat_speeder_tags');
-
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_enable'"))
 		safe_insert('txp_prefs', "name='pat_speeder_enable', val='0', type=1, event='admin', html='yesnoradio', position=24");
 
@@ -145,6 +110,7 @@ function pat_speeder_prefs()
 		safe_insert('txp_prefs', "name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
 
 	safe_repair('txp_prefs');
+	safe_repair('txp_plugin');
 
 }
 
@@ -158,13 +124,11 @@ function pat_speeder_prefs()
 function pat_speeder_cleanup()
 {
 
-	// Array of tables & rows to be removed.
-	$els = array('txp_prefs' => 'pat_speeder', 'txp_lang' => 'pat_speeder');
-
-	// Process actions.
-	foreach ($els as $table => $row) {
-		safe_delete($table, "name LIKE '".str_replace('_', '\_', $row)."\_%'");
-		safe_repair($table);
-	}
+	safe_delete('txp_prefs', "name='pat_speeder_enable'");
+	safe_delete('txp_prefs', "name='pat_speeder_gzip'");
+	safe_delete('txp_prefs', "name='pat_speeder_tags'");
+	safe_delete('txp_lang', "owner='pat_speeder'");
+	safe_repair('txp_plugin');
 
 }
+
