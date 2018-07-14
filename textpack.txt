@@ -2,11 +2,13 @@
 pat_speeder_enable => Enable pat_speeder?
 pat_speeder_gzip => Enable GZIP compression with pat_speeder?
 pat_speeder_tags => List of tags to protect from pat_speeder:
+pat_speeder_compact => Enable extreme compression?
 #@pat_speeder
 #@language fr
 pat_speeder_enable => Activer pat_speeder ?
 pat_speeder_gzip => Activer la compression Gzip avec pat_speeder ?
 pat_speeder_tags => Liste de balises à protéger de pat_speeder :
+pat_speeder_compact => Activer la compression extrême ?
 #@pat_speeder
 #@language de
 pat_speeder_enable => Aktivieren Sie pat_speeder?
