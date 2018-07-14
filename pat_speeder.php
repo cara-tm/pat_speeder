@@ -42,17 +42,16 @@ if (txpinterface == 'admin')
 function pat_speeder($atts)
 {
 
-	global $prefs;
-
 	extract(lAtts(array(
-		'enable' => true,
-		'gzip'   => $prefs['pat_speeder_gzip'],
-		'code'   => $prefs['pat_speeder_tags'],
+		'enable'  => true,
+		'gzip'    => get_pref('pat_speeder_gzip'),
+		'code'    => get_pref('pat_speeder_tags'),
+		'compact' => get_pref('pat_speeder_compact'),
 	),$atts));
 
 	if ( $enable || ($prefs['pat_speeder_enable'] && $enable) ) {
-		ob_start(function($buffer) use ($gzip, $code) {
-			return _pat_speeder_go($buffer, $gzip, $code);
+		ob_start(function($buffer) use ($gzip, $code, $compact) {
+			return _pat_speeder_go($buffer, $gzip, $code, $compact);
 		});
 	}
 
@@ -64,13 +63,14 @@ function pat_speeder($atts)
  * @return string HTML compressed content
  */
 
-function _pat_speeder_go($buffer, $gzip, $code)
+function _pat_speeder_go($buffer, $gzip, $code, $compact)
 {
 
 	$codes = str_replace(',', '|', $code);
+	$compact = ($compact ? '' : ' ');
 
 	// remove uncessary elements from the source document
-	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', ' ', $buffer);
+	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
 	// remove all comments except google ones
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
@@ -109,6 +109,9 @@ function pat_speeder_prefs()
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_tags'"))
 		safe_insert('txp_prefs', "name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
 
+	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_compact'"))
+		safe_insert('txp_prefs', "name='pat_speeder_compact', val='0', type=1, event='admin', html='yesnoradio', position=27");
+
 	safe_repair('txp_prefs');
 	safe_repair('txp_plugin');
 
@@ -127,6 +130,7 @@ function pat_speeder_cleanup()
 	safe_delete('txp_prefs', "name='pat_speeder_enable'");
 	safe_delete('txp_prefs', "name='pat_speeder_gzip'");
 	safe_delete('txp_prefs', "name='pat_speeder_tags'");
+	safe_delete('txp_prefs', "name='pat_speeder_compact'");
 	safe_delete('txp_lang', "owner='pat_speeder'");
 	safe_repair('txp_plugin');
 
