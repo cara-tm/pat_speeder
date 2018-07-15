@@ -28,8 +28,8 @@ if (class_exists('\Textpattern\Tag_Registry')) {
  */
 if (txpinterface == 'admin')
 {
-	register_callback('pat_speeder_prefs', 'plugin_lifecycle.pat_speeder', 'installed');
-	register_callback('pat_speeder_cleanup', 'plugin_lifecycle.pat_speeder', 'deleted');
+	register_callback('_pat_speeder_prefs', 'plugin_lifecycle.pat_speeder', 'installed');
+	register_callback('_pat_speeder_cleanup', 'plugin_lifecycle.pat_speeder', 'deleted');
 }
 
 
@@ -97,7 +97,7 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
  * @param  
  * @return Insert this plugin prefs into 'txp_prefs' table.
  */
-function pat_speeder_prefs()
+function _pat_speeder_prefs()
 {
 
 	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_enable'"))
@@ -124,14 +124,16 @@ function pat_speeder_prefs()
  * @param
  * @return Delete this plugin prefs.
  */
-function pat_speeder_cleanup()
+function _pat_speeder_cleanup()
 {
 
-	safe_delete('txp_prefs', "name='pat_speeder_enable'");
-	safe_delete('txp_prefs', "name='pat_speeder_gzip'");
-	safe_delete('txp_prefs', "name='pat_speeder_tags'");
-	safe_delete('txp_prefs', "name='pat_speeder_compact'");
+	$tables = array('pat_speeder_enable', 'pat_speeder_gzip', 'pat_speeder_tags', 'pat_speeder_compact');
+	foreach ($tables as $val) {
+		safe_delete('txp_prefs', "name='".$val."'");
+	}
 	safe_delete('txp_lang', "owner='pat_speeder'");
+
+	safe_repair('txp_prefs');
 	safe_repair('txp_plugin');
 
 }
