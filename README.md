@@ -1,4 +1,4 @@
-# pat-speeder ![Textpattern 4.5+](https://camo.githubusercontent.com/9a4f447d70418f3f50bd9a3d5febb1e1274f60c3/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f546578747061747465726e2d342e352b2d627269676874677265656e2e737667)
+# pat-speeder ![Textpattern 4.7+](https://img.shields.io/badge/Textpattern-4.7%2B-brightgreen.svg)
 
 A Textpattern CMS plugin.
 
