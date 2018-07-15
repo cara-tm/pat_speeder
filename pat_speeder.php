@@ -66,7 +66,8 @@ function pat_speeder($atts)
 function _pat_speeder_go($buffer, $gzip, $code, $compact)
 {
 
-	$codes = str_replace(',', '|', $code);
+	$codes = preg_replace('/\s*/m', '', $codes);
+	$codes = str_replace(',', '|', rtrim($codes, ','));
 	$compact = ($compact ? '' : ' ');
 
 	// remove uncessary elements from the source document
