@@ -66,7 +66,7 @@ function pat_speeder($atts)
 function _pat_speeder_go($buffer, $gzip, $code, $compact)
 {
 
-	$codes = preg_replace('/\s*/m', '', $codes);
+	$codes = preg_replace('/\s*/m', '', $code);
 	$codes = str_replace(',', '|', rtrim($codes, ','));
 	$compact = ($compact ? '' : ' ');
 
