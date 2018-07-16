@@ -1,4 +1,4 @@
-# pat-speeder ![license](https://img.shields.io/github/license/cara-tm/pat_speeder.svg) ![version](https://img.shields.io/github/tag/cara-tm/pat_speeder.svg) ![Textpattern 4.7+](https://img.shields.io/badge/Textpattern-4.7%2B-brightgreen.svg)
+# pat-speeder ![license](https://img.shields.io/github/license/cara-tm/pat_speeder.svg?maxAge=3600) ![version](https://img.shields.io/github/tag/cara-tm/pat_speeder.svg) ![Textpattern 4.7+](https://img.shields.io/badge/Textpattern-4.7%2B-brightgreen.svg?maxAge=3600)
 
 A Textpattern CMS plugin. ![Last Commit](https://img.shields.io/github/last-commit/cara-tm/pat_speeder.svg)
 
