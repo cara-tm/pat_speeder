@@ -65,17 +65,19 @@ function pat_speeder($atts)
 
 function _pat_speeder_go($buffer, $gzip, $code, $compact)
 {
-
+	// Sanitize the list: no spaces
 	$codes = preg_replace('/\s*/m', '', $code);
+	// ... and no final comma. Convert into a pipes separated list
 	$codes = str_replace(',', '|', rtrim($codes, ','));
+	// Set the replacement mode
 	$compact = ($compact ? '' : ' ');
 
-	// remove uncessary elements from the source document
+	// Remove uncessary elements from the source document (especially: from 2 and more spaces between tags). But keep safe excluded tags
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
-	// remove all comments except google ones
+	// Remove all comments except google ones and IE conditional comments, too
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
-	// server side compression if available
+	// Server side compression if available
 	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
 		$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
 		if( function_exists('gzencode') && preg_match('/gzip/i', $encoding) ) {
@@ -87,8 +89,9 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 		}
 	}
 
-
+	// Return the result
 	return $buffer;
+	// Empty the buffer
 	ob_end_flush();
 }
 
