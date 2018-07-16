@@ -89,6 +89,7 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 
 
 	return $buffer;
+	ob_end_flush();
 }
 
 
