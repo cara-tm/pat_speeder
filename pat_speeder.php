@@ -8,7 +8,7 @@
  * @type:         Admin + Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      1.0
+ * @version:      1.1
  * @license:      GPLv2
  */
 
@@ -91,8 +91,10 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 
 	// Return the result
 	return $buffer;
+	// Send the buffer
+	ob_flush();
 	// Empty the buffer
-	ob_end_flush();
+	ob_end_clean();
 }
 
 
