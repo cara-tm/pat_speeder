@@ -24,9 +24,9 @@ After installation, go to your website preferences:
 
 **Enable pat_speeder?** Allow you to stop this plugin rendering thougout all your pages where it is used (only if the "enable" attibute is set on "1");
 
-**Enable GZIP compression with pat_speeder?** Choose to activate the internal GZIP compression if needed (you may set your .htaccess file instead);
+**Enable GZIP compression with pat_speeder?** Choose to activate the internal GZIP compression if needed (you may set your .htaccess file instead) only if the gzip attribute isn't set into this plugin tag;
 
-**List of tags to protect from pat_speeder:** a comma separated list of tags to protect against the plugin (e. `script, svg`);
+**List of tags to protect from pat_speeder:** a comma separated list of tags to protect against the plugin. Default: `script, svg, pre, code`. Note: `textarea` is included into the plugin;
 
 **Enable extreme compression?** This is a 'Compact mode' that removes all unnecessary spaces (precisely: 2 and more) between all tags to return a smaller document in size. Keep in mind you have to write correctly your page and form markups without excessive spaces around tags otherwise you can get unexpective results such as text content sticky from each others (typical case: a link into a text). So this is why this mode is facultative and reserved for advanced users.
 
