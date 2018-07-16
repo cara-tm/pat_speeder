@@ -1,6 +1,6 @@
-# pat-speeder ![Textpattern 4.7+](https://img.shields.io/badge/Textpattern-4.7%2B-brightgreen.svg)
+# pat-speeder ![license](https://img.shields.io/github/license/cara-tm/pat_speeder.svg) ![version](https://img.shields.io/github/tag/cara-tm/pat_speeder.svg) ![Textpattern 4.7+](https://img.shields.io/badge/Textpattern-4.7%2B-brightgreen.svg)
 
-A Textpattern CMS plugin.
+A Textpattern CMS plugin. ![Last Commit](https://img.shields.io/github/last-commit/cara-tm/pat_speeder.svg)
 
 Did you ever seen the source code of the Google main page? For speed reasons, Google serves its home page into one line of code. The benefit is a server bandwidth gain. So what don't we make the same for ours TXP websites?
 
