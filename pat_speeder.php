@@ -78,13 +78,13 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
 	// Server side compression if available
-	if( $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING']) ) {
+	if (get_pref('pat_speeder_gzip') and $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 		$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
-		if( function_exists('gzencode') && preg_match('/gzip/i', $encoding) ) {
-			header ('Content-Encoding: gzip');
+		if (function_exists('gzencode') && preg_match('/gzip/i', $encoding)) {
+			header('Content-Encoding: gzip');
 			$buffer = gzencode($buffer);
-		} elseif( function_exists('gzdeflate') && preg_match('/deflate/i', $encoding) ) {
-			header ('Content-Encoding: deflate');
+		} elseif (function_exists('gzdeflate') && preg_match('/deflate/i', $encoding)) {
+			header('Content-Encoding: deflate');
 			$buffer = gzdeflate($buffer);
 		}
 	}
@@ -92,7 +92,7 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 	// Return the result
 	return $buffer;
 	// Send the buffer
-	ob_flush();
+	ob_end_flush();
 	// Empty the buffer
 	ob_end_clean();
 }
