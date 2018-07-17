@@ -49,7 +49,7 @@ function pat_speeder($atts)
 		'compact' => get_pref('pat_speeder_compact'),
 	),$atts));
 
-	if ( $enable || (get_pref('pat_speeder_enable') && $enable) ) {
+	if (get_pref('pat_speeder_enable') and $enable) {
 		ob_start(function($buffer) use ($gzip, $code, $compact) {
 			return _pat_speeder_go($buffer, $gzip, $code, $compact);
 		});
