@@ -43,13 +43,13 @@ function pat_speeder($atts)
 {
 
 	extract(lAtts(array(
-		'enable'  => true,
+		'enable'  => false,
 		'gzip'    => get_pref('pat_speeder_gzip'),
 		'code'    => get_pref('pat_speeder_tags'),
 		'compact' => get_pref('pat_speeder_compact'),
 	),$atts));
 
-	if (get_pref('pat_speeder_enable') and $enable) {
+	if (get_pref('pat_speeder_enable') or ($enable and get_pref('pat_speeder_enable'))) {
 		ob_start(function($buffer) use ($gzip, $code, $compact) {
 			return _pat_speeder_go($buffer, $gzip, $code, $compact);
 		});
