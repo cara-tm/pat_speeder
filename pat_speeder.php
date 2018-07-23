@@ -78,7 +78,7 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
 
 	// Server side compression if available
-	if (get_pref('pat_speeder_gzip') and $gzip && isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+	if (get_pref('pat_speeder_gzip') and $gzip && (isset($_SERVER['HTTP_ACCEPT_ENCODING']) and ini_get('zlib.output_compression'))) {
 		$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
 		if (function_exists('gzencode') && preg_match('/gzip/i', $encoding)) {
 			header('Content-Encoding: gzip');
