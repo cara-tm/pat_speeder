@@ -2,33 +2,33 @@
 
 A Textpattern CMS plugin. ![Last Commit](https://img.shields.io/github/last-commit/cara-tm/pat_speeder.svg)
 
-Did you ever seen the source code of the Google main page? For speed reasons, Google serves its home page into one line of code. The benefit is a server bandwidth gain. So what don't we make the same for ours TXP websites?
+Have you seen the source code of the Google homepage? For speed reasons, Google serves its homepage as a single line of code. The benefit is a reduction in file size and bandwidth usage. Now we can do the same for our TXP websites.
 
-Just activate this plugin and your page templates will be rendered into one line of code:
+Just activate this plugin and your page templates will be rendered as a single line of code.
 
     <txp:pat_speeder enable="1" gzip="1" /><!DOCTYPE ...
 
-See the plugin help for attributes details.
+See the plugin help for details of the attributes available.
 
-**Warning**: This plugin seems not to be compatible with some flash audio players (to be confirmed).
+**Warning**: This plugin may not be compatible with some flash audio players (to be confirmed).
 
-You can take a benefit rendition between 5% (for precompressed pages) and 6% (normal pages) according to [Ruud van Melick](https://vanmelick.com/)'s observations.
+According to [Ruud van Melick](https://vanmelick.com/)'s observations, this plugin results in a reduction of between 5% (for precompressed pages) and 6% (normal pages).
 
 Included automatic server side GZIP compression, if available, gives an average additional benefit of 75%.
 
-This plugin (v 0.7) seems to get **better results** than ask_header (v 0.3.6) **up to 0.7%** (based on a vanilla default TXP installation).
+This plugin (v 0.7) seems to get **better results** than aks_header (v 0.3.6) **up to 0.7%** (based on a vanilla default TXP installation).
 
 ## Preferences settings
 
 After installation, go to your website preferences:
 
-**Enable pat_speeder?** Allow you to stop this plugin rendering thougout all your pages where it is used (only if the "enable" attibute is set on "1");
+**Enable pat_speeder?** Enable or disable the plugin rendering on all your pages where it is used (only if the "enable" attibute is set on "1");
 
-**Enable GZIP compression with pat_speeder?** Choose to activate the internal GZIP compression if needed (you may set your .htaccess file instead) only if the gzip attribute isn't set into this plugin tag;
+**Enable GZIP compression with pat_speeder?** Choose to activate the internal GZIP compression if needed (you may set your .htaccess file instead) only if the gzip attribute isn't set in this plugin tag;
 
-**List of tags to protect from pat_speeder:** a comma separated list of tags to protect against the plugin. Default: `script, svg, pre, code`. Note: `textarea` is included into the plugin;
+**List of tags to protect from pat_speeder:** a comma separated list of tags that the compression should skip. Default: `script, svg, pre, code`. Note: `textarea` is included in the plugin;
 
-**Enable extreme compression?** This is a 'Compact mode' that removes all unnecessary spaces (precisely: 2 and more) between all tags to return a smaller document in size. Keep in mind you have to write correctly your page and form markups without excessive spaces around tags otherwise you can get unexpective results such as text content sticky from each others (typical case: a link into a text). So this is why this mode is facultative and reserved for advanced users.
+**Enable extreme compression?** This is a “compact mode” that removes all unnecessary spaces (to be precise: *2 or more*) between all tags to return a smaller document in size. Bear in mind that your page and form markup must be cleanly written without additional spaces around tags. This can otherwise result in unexpected results such as text content directly adjacent to one another (e.g. a link running straight into text). As such, this settings is recommended only for advanced users.
 
 
 
