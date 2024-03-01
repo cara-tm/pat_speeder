@@ -1,0 +1,94 @@
+h1. Speed up your TXP websites! 🚀
+
+Have you ever seen the source code of the Google homepage? For speed reasons, Google serves its homepage as a single line of code. The benefit is a reduction in file size and bandwidth usage. Now we can do the same for our TXP websites.
+
+Just activate this plugin and your page templates will be rendered as a single line of code.
+
+*Warning*: This plugin seems not to be compatible with some flash audio players (to be confirmed).
+
+Furthermore, for a long time I thought to preserve paddings before and after each link ("a" tags) and I added a space between all HTML code within the compressed copy in order to keep visual appearances unchanged. But all these extra spaces are not parts of natural and well written text contents. It encourages you to add them before and after! Keep that in mind, write good content and gain 1.03% in compression (spaces between @<a>@ tags will be removed).
+
+An additional preference is available for more compact compression with all spaces removed (Default: false).
+
+h2. Test results
+
+According to Ruud's observations, this plugin results in a reduction of between 5% (for precompressed pages) and 6% (normal pages).
+
+h2. Usage
+
+Add the following tag at the very top of your page templates:
+
+@<txp:pat_speeder />@
+
+h2. Attributes
+
+This plugin has the following attributes:
+
+* @enable@ boolean: set "boolean" to 1 activate the plugin. Set to 0 disabled it. Default 1 (yes).
+* @gzip@ boolean (optional): server side gzip compression. Default: 1 (true).
+* @code@ (optional): a comma separated list of tags name on which do not apply compression. Default: @script,svg,pre,code@
+* @compact@ (optional): further reduction by removing all duplicate spaces. See note below.
+
+
+h2. Example
+
+@<txp:pat_speeder enable="0" /><!DOCTYPE ...@
+
+In this case, pat_speeder is'nt enable into this current page template.
+
+
+h2. Preferences
+
+After installation, go to your website preferences:
+
+* _Enable pat_speeder?_ Allow you to stop this plugin rendering thougout all your pages where it is used (only if the @enable@ attibute is set on @1@);
+* _Enable GZIP compression with pat_speeder?_ Choose to activate the internal @GZIP@ compression if needed (you may set your @.htaccess@ file instead) only if the gzip attribute isn't set into this plugin tag;
+* _List of tags to protect from pat_speeder_ A comma separated list of tags to protect against the plugin throughout all the site. Default: @script, svg, pre, code@. Note: @textarea@ is included into the plugin;
+* _Enable extreme compression?_ This is a “compact mode” that removes all unnecessary spaces (to be precise: *2 or more*) between all tags to return a smaller document in size. Bear in mind that your page and form markup must be cleanly written without additional spaces around tags. This can otherwise result in unexpected results such as text content directly adjacent to one another (e.g. a link running straight into text). As such, this settings is recommended only for advanced users.
+
+
+h2. Changelog
+
+* v0.1 on Jul, 22sd 2009. First release
+* v0.2 on Jul, 26th 2009. Second release. Adding some code submitted by Rudd.
+* v0.3 on Jul, 28th 2009. Third release. Mask html comments and css comments but preserve IE conditional comments.
+* v0.3.a on Jul 2009. Intermediate pre final release. The array() had been changed by a stronger regex.
+* v0.3.b on Jul, 30 2009. Final release. Support for @pre@ tags.
+* v0.4 on Jul, 29th 2009. _Non intrusive release_:  Add "enable" attribute.
+* v0.4a & v0.4b. Unpublished. For testing purposes only.
+* v0.4c on Jul, 06 2011. Add support in regex for "HTML5/Boilerplate" doctype declaration method.
+* v0.4.d on August, 18th 2013. Minor changes for better support of pre &amp; code statements.
+* v0.5 on March, 25th 2014. Corrects removing space between some tags.
+* v0.6 on March, 27th 2014. Corrects errors. Remove HTML comments.
+* v0.7 on May, 26th 2015. Add server side compression. Add "gzip" attribute. Better new line removing server system independant.
+* v0.7.1 on May, 30th 2015. Remove extra spaces between all tags.
+* v0.7.5 on June, 22th 2018. Improvement; keep google bot comments.
+* v1.0 on July, 14th 2018. better support for IE conditional comments into the @head@ part of the document; support for the Google comments (i.e. @<!--googleoff: all-->@); better support for accentuated languages.
+* v1.1 on July, 23th 2018. Final version.
+* v1.1.1 on August, 25th 2018. Add option to only compress when the site production status is ‘live’.
+* v1.1.2 on November, 18th 2019. Correct tag registration.
+* v2.0 on March, 1st 2024. Global revision of the code.
+
+See also the "forum thread":https://forum.textpattern.com/viewtopic.php?id=31345 for requests or help.
+
+
+h2. Additional Optimization
+
+*Not needed for version 0.7: information retained for posterity*.
+
+If you want to further reduce the size of your website and assets, you can take advantage on your server's gzip compression for all your other files (css, javascript, php, images) regardless of where they are located. This can produce significant gains of up to 80%. In your @.htaccess@ file,  add the following lines of code:
+
+bc.. <IfModule mod_gzip.c>
+    mod_gzip_on       Yes
+    mod_gzip_dechunk  Yes
+    mod_gzip_item_include file      \.(html?|txt|css|js|php|pl)$
+    mod_gzip_item_include handler   ^cgi-script$
+    mod_gzip_item_include mime      ^text/.*
+    mod_gzip_item_include mime      ^application/x-javascript.*
+    mod_gzip_item_exclude mime      ^image/.*
+    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
+
+h2. Acknowledgments
+
+Special thanks to "Ruud":http://vanmelick.com/txp/ for his good advice and to Jakob for some code reviews (previous version).

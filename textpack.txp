@@ -1,0 +1,23 @@
+#@admin
+#Default language, en-us, en-gb
+pat_speeder => pat speeder 🚀
+pat_speeder_pref_enable => Enable pat_speeder?
+pat_speeder_pref_gzip => Enable Gzip compression?
+pat_speeder_pref_enable_live_only => Enable only on production mode?
+pat_speeder_pref_compact => Enable extreme compression?
+pat_speeder_pref_tags => List of tags to protect from pat_speeder:
+#@admin
+#@language fr-fr
+pat_speeder => pat speeder 🚀
+pat_speeder_pref_enable => Activer pat_speeder ?
+pat_speeder_pref_gzip => Activer la compression Gzip ?
+pat_speeder_pref_enable_live_only => Activer uniquement en mode de production ?
+pat_speeder_pref_compact => Activer le mode compact (compression extrême) ?
+pat_speeder_pref_tags => Liste de balises à protéger de pat_speeder :
+#@admin
+#@language de
+pat_speeder => pat speeder 🚀
+pat_speeder_pref_enable => Aktivieren Sie pat_speeder?
+pat_speeder_pref_gzip => Aktivieren Sie gzip-Komprimierung für pat_speeder?
+pat_speeder_pref_enable_live_only => Aktivieren Sie pat_speeder nur bei Produktions-Status ,live‘?
+pat_speeder_pref_tags => Stichworte Liste von pat_speeder zu schützen:

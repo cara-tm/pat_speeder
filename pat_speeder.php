@@ -1,14 +1,14 @@
 <?php
 /**
- * @name	  pat_speeder
+ * @name	      pat_speeder
  * @description	  Display page source on one line of code
- * @link 	  http://pat-speeder.cara-tm.com
- * @author	  Patrick LEFEVRE
+ * @link 	      http://pat-speeder.cara-tm.com
+ * @author	      Patrick LEFEVRE
  * @author_email  <patrick[dot]lefevre[at]gmail[dot]com>
  * @type:         Admin + Public
  * @prefs:        no prefs
  * @order:        5
- * @version:      1.1
+ * @version:      2.0
  * @license:      GPLv2
  */
 
@@ -23,13 +23,18 @@ if (class_exists('\Textpattern\Tag\Registry')) {
 
 
 /**
- * This plugin lifecycle
- * 
+ * This plugin admin events
+ *
  */
 if (txpinterface == 'admin')
 {
-	register_callback('_pat_speeder_prefs', 'plugin_lifecycle.pat_speeder', 'installed');
-	register_callback('_pat_speeder_cleanup', 'plugin_lifecycle.pat_speeder', 'deleted');
+    // Install / remove prefs
+    register_callback('pat_speeder_lifecycle', 'plugin_lifecycle.pat_speeder');
+
+    // Prefs pane
+    add_privs("prefs.pat_speeder", "1,2,3,4");
+    add_privs("plugin_prefs.pat_speeder", "1,2,3,4");
+    register_callback('pat_speeder_options_prefs_redirect', 'plugin_prefs.pat_speeder');
 }
 
 
@@ -44,12 +49,18 @@ function pat_speeder($atts)
 
 	extract(lAtts(array(
 		'enable'  => false,
-		'gzip'    => get_pref('pat_speeder_gzip'),
-		'code'    => get_pref('pat_speeder_tags'),
-		'compact' => get_pref('pat_speeder_compact'),
+		'gzip'    => get_pref('pat_speeder_pref_gzip'),
+		'code'    => get_pref('pat_speeder_pref_tags'),
+		'compact' => get_pref('pat_speeder_pref_compact'),
 	),$atts));
 
-	if (get_pref('pat_speeder_enable') or ($enable and get_pref('pat_speeder_enable'))) {
+	if (
+		(get_pref('pat_speeder_pref_enable_live_only') and get_pref('production_status') === 'live')
+			or
+		(get_pref('pat_speeder_pref_enable_live_only') == '0' and
+			(get_pref('pat_speeder_pref_enable') or ($enable and get_pref('pat_speeder_pref_enable')))
+		)
+	) {
 		ob_start(function($buffer) use ($gzip, $code, $compact) {
 			return _pat_speeder_go($buffer, $gzip, $code, $compact);
 		});
@@ -104,27 +115,59 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 /**
  * Plugin prefs.
  *
- * @param  
+ * @param
  * @return Insert this plugin prefs into 'txp_prefs' table.
  */
-function _pat_speeder_prefs()
+function pat_speeder_lifecycle($event, $step) {
+
+    $msg = '';
+    $name = 'pat_speeder';
+
+    switch ($step) {
+        case "enabled":
+            //if (!pref_exists("pat_speeder_pref_enable")) {
+                set_pref("pat_speeder_pref_enable", 0, 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                $msg = gTxt('plugin_updated', array('{name}' => $name));
+ 
+                set_pref("pat_speeder_pref_enable_live_only", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                $msg = gTxt('pat_speeder_enable_live_only', array('{name}' => $name));
+
+                set_pref("pat_speeder_pref_compact", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                $msg = gTxt('pat_plugin_compact', array('{name}' => $name));
+
+                set_pref("pat_speeder_pref_gzip", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                $msg = gTxt('pat_plugin_gzip', array('{name}' => $name));
+
+                set_pref("pat_speeder_pref_tags", "script,svg,pre,code", 'pat_speeder', PREF_PLUGIN, 'input', 0);
+                $msg = gTxt('pat_plugin_tags', array('{name}' => $name));
+            //}
+            safe_repair('txp_prefs');
+            safe_repair('txp_plugin');
+            break;
+        case "disabled":
+            break;
+        case "installed":
+            $msg = gTxt('plugin_installed', array('{name}' => $name));
+            break;
+        case "deleted":
+            remove_pref(null, "pat_speeder");
+            _pat_speeder_cleanup();
+            safe_repair('txp_prefs');
+            safe_repair('txp_plugin');
+            $msg = gTxt('plugin_deleted', array('{name}' => $name));
+            break;
+    }
+
+    return $msg;
+}
+
+/**
+ * Re-route 'Options' link on Plugins panel to Admin › Preferences panel
+ *
+ */
+function pat_speeder_options_prefs_redirect()
 {
-
-	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_enable'"))
-		safe_insert('txp_prefs', "name='pat_speeder_enable', val='0', type=1, event='admin', html='yesnoradio', position=24");
-
-	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_gzip'"))
-		safe_insert('txp_prefs', "name='pat_speeder_gzip', val='0', type=1, event='admin', html='yesnoradio', position=25");
-
-	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_tags'"))
-		safe_insert('txp_prefs', "name='pat_speeder_tags', val='script,svg,pre,code', type=1, event='admin', html='text_input', position=26");
-
-	if (!safe_field ('name', 'txp_prefs', "name='pat_speeder_compact'"))
-		safe_insert('txp_prefs', "name='pat_speeder_compact', val='0', type=1, event='admin', html='yesnoradio', position=27");
-
-	safe_repair('txp_prefs');
-	safe_repair('txp_plugin');
-
+    header("Location: index.php?event=prefs#prefs_group_pat_speeder");
 }
 
 
@@ -137,7 +180,7 @@ function _pat_speeder_prefs()
 function _pat_speeder_cleanup()
 {
 
-	$tables = array('pat_speeder_enable', 'pat_speeder_gzip', 'pat_speeder_tags', 'pat_speeder_compact');
+	$tables = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_enable_live_only', 'pat_speeder_pref_compact');
 	foreach ($tables as $val) {
 		safe_delete('txp_prefs', "name='".$val."'");
 	}
