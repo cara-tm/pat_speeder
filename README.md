@@ -2,6 +2,8 @@
 
 A Textpattern CMS plugin. ![Last Commit](https://img.shields.io/github/last-commit/cara-tm/pat_speeder.svg)
 
+![Screenshot of the plugin.](preview.jpg)
+
 Have you seen the source code of the Google homepage? For speed reasons, Google serves its homepage as a single line of code. The benefit is a reduction in file size and bandwidth usage. Now we can do the same for our TXP websites.
 
 Just activate this plugin and your page templates will be rendered as a single line of code.
