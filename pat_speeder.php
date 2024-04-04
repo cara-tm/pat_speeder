@@ -2,11 +2,11 @@
 /**
  * @name	      pat_speeder
  * @description	  Display page source on one line of code
- * @link 	      http://pat-speeder.cara-tm.com
+ * @link 	      https://github.com/cara-tm/pat_speeder
  * @author	      Patrick LEFEVRE
  * @author_email  <patrick[dot]lefevre[at]gmail[dot]com>
  * @type:         Admin + Public
- * @prefs:        no prefs
+ * @prefs:        prefs
  * @order:        5
  * @version:      2.0
  * @license:      GPLv2
@@ -125,22 +125,22 @@ function pat_speeder_lifecycle($event, $step) {
 
     switch ($step) {
         case "enabled":
-            //if (!pref_exists("pat_speeder_pref_enable")) {
+            if (!pref_exists("pat_speeder_pref_enable")) {
                 set_pref("pat_speeder_pref_enable", 0, 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 $msg = gTxt('plugin_updated', array('{name}' => $name));
  
                 set_pref("pat_speeder_pref_enable_live_only", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_speeder_enable_live_only', array('{name}' => $name));
+                $msg = gTxt('pat_speeder_pref_enable_live_only', array('{name}' => $name));
 
                 set_pref("pat_speeder_pref_compact", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_plugin_compact', array('{name}' => $name));
+                $msg = gTxt('pat_plugin_pref_compact', array('{name}' => $name));
 
                 set_pref("pat_speeder_pref_gzip", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_plugin_gzip', array('{name}' => $name));
+                $msg = gTxt('pat_plugin_pref_gzip', array('{name}' => $name));
 
                 set_pref("pat_speeder_pref_tags", "script,svg,pre,code", 'pat_speeder', PREF_PLUGIN, 'input', 0);
-                $msg = gTxt('pat_plugin_tags', array('{name}' => $name));
-            //}
+                $msg = gTxt('pat_plugin_pref_tags', array('{name}' => $name));
+            }
             safe_repair('txp_prefs');
             safe_repair('txp_plugin');
             break;
@@ -190,4 +190,3 @@ function _pat_speeder_cleanup()
 	safe_repair('txp_plugin');
 
 }
-
