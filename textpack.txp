@@ -6,6 +6,8 @@ pat_speeder_pref_gzip => Enable Gzip compression?
 pat_speeder_pref_enable_live_only => Enable only on production mode?
 pat_speeder_pref_compact => Enable extreme compression?
 pat_speeder_pref_tags => List of tags to protect from pat_speeder:
+pat_speeder_pref_old_comments => Support old IE/Google conditional comments?
+pat_speeder_pref_debug => Add trace summary in source pages? 
 #@admin
 #@language fr
 pat_speeder => pat speeder 🚀
@@ -14,13 +16,17 @@ pat_speeder_pref_gzip => Activer la compression Gzip ?
 pat_speeder_pref_enable_live_only => Activer uniquement en mode de production ?
 pat_speeder_pref_compact => Activer le mode compact (compression extrême) ?
 pat_speeder_pref_tags => Liste de balises à protéger de pat_speeder :
+pat_speeder_pref_old_comments => Support des anciens commentaires conditionnels IE/Google ?
+pat_speeder_pref_debug => Ajouter un résumé de debogage aux pages sources ?
 #@admin
 #@language de
 pat_speeder => pat speeder 🚀
 pat_speeder_pref_enable => Aktivieren Sie pat_speeder?
 pat_speeder_pref_gzip => Aktivieren Sie gzip-Komprimierung für pat_speeder?
-pat_speeder_pref_enable_live_only => Aktivieren Sie pat_speeder nur bei Produktions-Status ,live‘?
+pat_speeder_pref_enable_live_only => Aktivieren Sie pat_speeder nur bei Produktions-Status ,live?
 pat_speeder_pref_tags => Stichworte Liste von pat_speeder zu schützen:
+pat_speeder_pref_old_comments => Alte bedingte Kommentare von IE/Google unterstützen?
+pat_speeder_pref_debug => Debug-Zusammenfassung in Quellseiten hinzufügen?
 #@admin
 #@language es
 pat_speeder => pat speeder 🚀
@@ -29,6 +35,8 @@ pat_speeder_pref_gzip => ¿Habilitar la compresión Gzip?
 pat_speeder_pref_enable_live_only => ¿Habilitar solo en modo de producción?
 pat_speeder_pref_compact => ¿Habilitar el modo compacto (compresión extrema)?
 pat_speeder_pref_tags => Lista de etiquetas para proteger de pat_speeder:
+pat_speeder_pref_old_comments => ¿Admite comentarios condicionales antiguos de IE/Google?
+pat_speeder_pref_debug => ¿Agregar resumen de depuración en las páginas fuente?
 #@admin
 #@language it
 pat_speeder => pat speeder 🚀
@@ -37,3 +45,5 @@ pat_speeder_pref_gzip => Abilitare la compressione Gzip?
 pat_speeder_pref_enable_live_only => Abilitare solo in modalità produzione?
 pat_speeder_pref_compact => Abilitare la modalità compatta (compressione estrema)?
 pat_speeder_pref_tags => Elenco dei tag da proteggere da pat_speeder:
+pat_speeder_pref_old_comments => Supporta i vecchi commenti condizionali di IE/Google?
+pat_speeder_pref_debug => Aggiungere un riepilogo del debug nelle pagine di origine?

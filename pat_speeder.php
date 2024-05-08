@@ -1,14 +1,14 @@
 <?php
 /**
- * @name	      pat_speeder
+ * @name          pat_speeder
  * @description	  Display page source on one line of code
- * @link 	      https://github.com/cara-tm/pat_speeder
- * @author	      Patrick LEFEVRE
+ * @link          https://github.com/cara-tm/pat_speeder
+ * @author        Patrick LEFEVRE
  * @author_email  <patrick[dot]lefevre[at]gmail[dot]com>
  * @type:         Admin + Public
  * @prefs:        prefs
  * @order:        5
- * @version:      2.0
+ * @version:      2.1
  * @license:      GPLv2
  */
 
@@ -21,6 +21,16 @@ if (class_exists('\Textpattern\Tag\Registry')) {
 		->register('pat_speeder');
 }
 
+/**
+ * This plugin public handler
+ *
+ */
+if (txpinterface == 'public') {
+	register_callback('pat_process($buffer, $gzip, $code, $compact)', 'pretext');
+	if (get_pref('pat_speeder_pref_debug') == 1) {
+		register_callback('pat_compression_end', 'textpattern_end');
+	}
+}
 
 /**
  * This plugin admin events
@@ -62,7 +72,7 @@ function pat_speeder($atts)
 		)
 	) {
 		ob_start(function($buffer) use ($gzip, $code, $compact) {
-			return _pat_speeder_go($buffer, $gzip, $code, $compact);
+			return pat_process($buffer, $gzip, $code, $compact);
 		});
 	}
 
@@ -74,8 +84,10 @@ function pat_speeder($atts)
  * @return string HTML compressed content
  */
 
-function _pat_speeder_go($buffer, $gzip, $code, $compact)
+function pat_process($buffer, $gzip, $code, $compact)
 {
+	// Add a tag to process if list is empty
+	$code .= 'template'; 
 	// Sanitize the list: no spaces
 	$codes = preg_replace('/\s*/m', '', $code);
 	// ... and no final comma. Convert into a pipes separated list
@@ -85,11 +97,17 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 
 	// Remove uncessary elements from the source document (especially: from 2 and more spaces between tags). But keep safe excluded tags
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
-	// Remove all comments except google ones and IE conditional comments, too
-	$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
+	if (get_pref('pat_speeder_pref_old_comments') == 1 ) {
+		// Remove all comments except google ones and IE conditional comments
+		$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
+	}
 
 	// Server side compression if available
-	if (get_pref('pat_speeder_gzip') and $gzip) {
+	if (function_exists('brotli_compress')) {
+		// Brotli compression
+		$compressed_page = brotli_compress($page, 11);
+		header('Content-Encoding: br');
+	} elseif (get_pref('pat_speeder_gzip') and $gzip) {
 		// Check server config
 		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && false == ini_get('zlib.output_compression')) {
 			$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
@@ -111,6 +129,11 @@ function _pat_speeder_go($buffer, $gzip, $code, $compact)
 	ob_end_clean();
 }
 
+function pat_compression_end() {
+	if (ob_get_length()) {
+		ob_end_flush();
+	}
+}
 
 /**
  * Plugin prefs.
@@ -127,19 +150,13 @@ function pat_speeder_lifecycle($event, $step) {
         case "enabled":
             if (!pref_exists("pat_speeder_pref_enable")) {
                 set_pref("pat_speeder_pref_enable", 0, 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('plugin_updated', array('{name}' => $name));
- 
                 set_pref("pat_speeder_pref_enable_live_only", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_speeder_pref_enable_live_only', array('{name}' => $name));
-
                 set_pref("pat_speeder_pref_compact", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_plugin_pref_compact', array('{name}' => $name));
-
                 set_pref("pat_speeder_pref_gzip", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = gTxt('pat_plugin_pref_gzip', array('{name}' => $name));
-
                 set_pref("pat_speeder_pref_tags", "script,svg,pre,code", 'pat_speeder', PREF_PLUGIN, 'input', 0);
-                $msg = gTxt('pat_plugin_pref_tags', array('{name}' => $name));
+                set_pref("pat_speeder_pref_old_comments", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                set_pref("pat_speeder_pref_debug", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
+                $msg = 'pat_speeder enabled';
             }
             safe_repair('txp_prefs');
             safe_repair('txp_plugin');
