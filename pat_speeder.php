@@ -103,17 +103,13 @@ function pat_process($buffer, $gzip, $code, $compact)
 	}
 
 	// Server side compression if available
-	if (function_exists('brotli_compress')) {
-		// Brotli compression
-		$compressed_page = brotli_compress($page, 11);
-		header('Content-Encoding: br');
-	} elseif (get_pref('pat_speeder_gzip') and $gzip) {
+	if (get_pref('pat_speeder_gzip') and $gzip) {
 		// Check server config
 		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && false == ini_get('zlib.output_compression')) {
 			$encoding = $_SERVER['HTTP_ACCEPT_ENCODING'];
-				if(function_exists('gzencode') && preg_match('/gzip/i', $encoding)) {
-					header('Content-Encoding: gzip');
-					$buffer = gzencode($buffer);
+			if(function_exists('gzencode') && preg_match('/gzip/i', $encoding)) {
+				header('Content-Encoding: gzip');
+				$buffer = gzencode($buffer);
 			} elseif (function_exists('gzdeflate') && preg_match('/deflate/i', $encoding)) {
 				header('Content-Encoding: deflate');
 				$buffer = gzdeflate($buffer);
