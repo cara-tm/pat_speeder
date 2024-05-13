@@ -21,16 +21,6 @@ if (class_exists('\Textpattern\Tag\Registry')) {
 		->register('pat_speeder');
 }
 
-/**
- * This plugin public handler
- *
- */
-if (txpinterface == 'public') {
-	register_callback('pat_process($buffer, $gzip, $code, $compact)', 'pretext');
-	if (get_pref('pat_speeder_pref_debug') == 1) {
-		register_callback('pat_compression_end', 'textpattern_end');
-	}
-}
 
 /**
  * This plugin admin events
