@@ -115,11 +115,6 @@ function pat_process($buffer, $gzip, $code, $compact)
 	ob_end_clean();
 }
 
-function pat_compression_end() {
-	if (ob_get_length()) {
-		ob_end_flush();
-	}
-}
 
 /**
  * Plugin prefs.
