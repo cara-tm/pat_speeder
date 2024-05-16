@@ -76,8 +76,8 @@ function pat_speeder($atts)
 
 function pat_process($buffer, $gzip, $code, $compact)
 {
-	// Add a tag to process if list is empty
-	$code .= 'template'; 
+	// Add a tag
+	$code .= 'fake-tag';
 	// Sanitize the list: no spaces
 	$codes = preg_replace('/\s*/m', '', $code);
 	// ... and no final comma. Convert into a pipes separated list
@@ -139,8 +139,11 @@ function pat_speeder_lifecycle($event, $step) {
                 set_pref("pat_speeder_pref_debug", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 $msg = 'pat_speeder enabled';
             }
-            safe_repair('txp_prefs');
-            safe_repair('txp_plugin');
+            // Remove old plugin rows
+            safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
+            // Repair and optimize tables
+            safe_repair('txp_prefs', 'txp_plugin', 'txp_lang');
+            safe_optimize('txp_prefs', 'txp_plugin', 'txp_lang');
             break;
         case "disabled":
             break;
@@ -150,8 +153,6 @@ function pat_speeder_lifecycle($event, $step) {
         case "deleted":
             remove_pref(null, "pat_speeder");
             _pat_speeder_cleanup();
-            safe_repair('txp_prefs');
-            safe_repair('txp_plugin');
             $msg = gTxt('plugin_deleted', array('{name}' => $name));
             break;
     }
@@ -178,13 +179,13 @@ function pat_speeder_options_prefs_redirect()
 function _pat_speeder_cleanup()
 {
 
-	$tables = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_enable_live_only', 'pat_speeder_pref_compact');
-	foreach ($tables as $val) {
+	$rows = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_enable_live_only', 'pat_speeder_pref_compact');
+	foreach ($rows as $val) {
 		safe_delete('txp_prefs', "name='".$val."'");
 	}
+	// Delete, repair and optimize
 	safe_delete('txp_lang', "owner='pat_speeder'");
-
-	safe_repair('txp_prefs');
-	safe_repair('txp_plugin');
+	safe_repair('txp_prefs', 'txp_plugin', 'txp_lang');
+    safe_optimize('txp_prefs', 'txp_plugin', 'txp_lang');
 
 }
