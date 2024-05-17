@@ -142,8 +142,12 @@ function pat_speeder_lifecycle($event, $step) {
             // Remove old plugin rows
             safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
             // Repair and optimize tables
-            safe_repair('txp_prefs', 'txp_plugin', 'txp_lang');
-            safe_optimize('txp_prefs', 'txp_plugin', 'txp_lang');
+            safe_repair('txp_prefs');
+			safe_repair('txp_plugin');
+			safe_repair('txp_lang');
+            safe_optimize('txp_prefs');
+			safe_optimize('txp_plugin');
+			safe_optimize('txp_lang');
             break;
         case "disabled":
             break;
@@ -185,7 +189,11 @@ function _pat_speeder_cleanup()
 	}
 	// Delete, repair and optimize
 	safe_delete('txp_lang', "owner='pat_speeder'");
-	safe_repair('txp_prefs', 'txp_plugin', 'txp_lang');
-    safe_optimize('txp_prefs', 'txp_plugin', 'txp_lang');
+	safe_repair('txp_prefs');
+	safe_repair('txp_plugin');
+	safe_repair('txp_lang');
+    safe_optimize('txp_prefs');
+	safe_optimize('txp_plugin');
+	safe_optimize('txp_lang');
 
 }
