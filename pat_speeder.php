@@ -145,7 +145,7 @@ function pat_speeder_lifecycle($event, $step) {
             safe_repair('txp_prefs');
 			safe_repair('txp_plugin');
 			safe_repair('txp_lang');
-            safe_optimize('txp_prefs');
+			safe_optimize('txp_prefs');
 			safe_optimize('txp_plugin');
 			safe_optimize('txp_lang');
             break;
@@ -197,3 +197,4 @@ function _pat_speeder_cleanup()
 	safe_optimize('txp_lang');
 
 }
+
