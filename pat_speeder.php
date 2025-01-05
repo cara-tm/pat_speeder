@@ -88,8 +88,8 @@ function pat_process($buffer, $gzip, $code, $compact)
 	// Remove uncessary elements from the source document (especially: from 2 and more spaces between tags). But keep safe excluded tags
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
 	if (get_pref('pat_speeder_pref_old_comments') == 0 ) {
-		// Remove all comments except google ones and IE conditional comments
-		$buffer = preg_replace('/<!--([^<|\[|>|go{2}gleo]).*?-->/s', '', $buffer);
+		// Remove all comments except google ones
+		$buffer = preg_replace('/(<!--[^go{2}gleo)]|\/\*+).*?(-->|\*\/)/s', '', $buffer);
 	}
 
 	// Server side compression if available

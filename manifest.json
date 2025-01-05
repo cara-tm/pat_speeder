@@ -1,9 +1,11 @@
 {
-    "version": "2.2",
+	"name": "pat_speeder",
+	"description": "Speed up your TXP websites!",
+    "version": "2.3",
+	"txp-type":"textpattern-plugin",
     "type": 1,
     "order": 5,
+	"flags": 3,
     "author": "Patrick LEFEVRE",
     "author_uri": "https:\/\/github.com\/cara-tm\/pat_speeder",
-    "description": "Speed up your TXP websites!",
-    "flags": 3
 }
