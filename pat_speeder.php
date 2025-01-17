@@ -89,7 +89,7 @@ function pat_process($buffer, $gzip, $code, $compact)
 	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
 	if (get_pref('pat_speeder_pref_old_comments') == 0 ) {
 		// Remove all comments except google ones
-		$buffer = preg_replace('/(<!--[^go{2}gleo)]|\/\*+).*?(-->|\*\/)/s', '', $buffer);
+		$buffer = preg_replace('/(<!--[^googleo]|\s?\/\*).*?(-->|\*\/)/s', '', $buffer);
 	}
 
 	// Server side compression if available
