@@ -8,7 +8,7 @@
  * @type:         Admin + Public
  * @prefs:        prefs
  * @order:        5
- * @version:      2.2
+ * @version:      2.4
  * @license:      GPLv2
  */
 
@@ -55,10 +55,10 @@ function pat_speeder($atts)
 	),$atts));
 
 	if (
-		(get_pref('pat_speeder_pref_enable_live_only') and get_pref('production_status') === 'live')
+		(get_pref('pat_speeder_pref_enable_live_only') and get_pref('production_status') === 'live' or $enable !== '0')
 			or
-		(get_pref('pat_speeder_pref_enable_live_only') == '0' and
-			(get_pref('pat_speeder_pref_enable') or ($enable and get_pref('pat_speeder_pref_enable')))
+		(get_pref('pat_speeder_pref_enable_live_only') === '0' and
+			(get_pref('pat_speeder_pref_enable') and (get_pref('pat_speeder_pref_enable') and $enable === '1'))
 		)
 	) {
 		ob_start(function($buffer) use ($gzip, $code, $compact) {
@@ -78,7 +78,7 @@ function pat_process($buffer, $gzip, $code, $compact)
 {
 	// Add a tag
 	$code .= 'fake-tag';
-	// Sanitize the list: no spaces
+	// Sanitize the lists: no spaces
 	$codes = preg_replace('/\s*/m', '', $code);
 	// ... and no final comma. Convert into a pipes separated list
 	$codes = str_replace(',', '|', rtrim($codes, ','));
@@ -120,7 +120,7 @@ function pat_process($buffer, $gzip, $code, $compact)
  * Plugin prefs.
  *
  * @param
- * @return Insert this plugin prefs into 'txp_prefs' table.
+ * @return Insert this plugin prefs into 'txp_prefs' table
  */
 function pat_speeder_lifecycle($event, $step) {
 
@@ -136,18 +136,17 @@ function pat_speeder_lifecycle($event, $step) {
                 set_pref("pat_speeder_pref_gzip", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 set_pref("pat_speeder_pref_tags", "script,svg,pre,code", 'pat_speeder', PREF_PLUGIN, 'input', 0);
                 set_pref("pat_speeder_pref_old_comments", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                set_pref("pat_speeder_pref_debug", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 $msg = 'pat_speeder enabled';
             }
             // Remove old plugin rows
             safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
             // Repair and optimize tables
             safe_repair('txp_prefs');
-			safe_repair('txp_plugin');
-			safe_repair('txp_lang');
-			safe_optimize('txp_prefs');
-			safe_optimize('txp_plugin');
-			safe_optimize('txp_lang');
+            safe_repair('txp_plugin');
+            safe_repair('txp_lang');
+            safe_optimize('txp_prefs');
+            safe_optimize('txp_plugin');
+            safe_optimize('txp_lang');
             break;
         case "disabled":
             break;
@@ -187,14 +186,13 @@ function _pat_speeder_cleanup()
 	foreach ($rows as $val) {
 		safe_delete('txp_prefs', "name='".$val."'");
 	}
+	safe_delete('txp_lang', "owner='pat_speeder'");
 	// Delete, repair and optimize
 	safe_delete('txp_lang', "owner='pat_speeder'");
 	safe_repair('txp_prefs');
-	safe_repair('txp_plugin');
-	safe_repair('txp_lang');
+    safe_repair('txp_plugin');
+    safe_repair('txp_lang');
     safe_optimize('txp_prefs');
-	safe_optimize('txp_plugin');
-	safe_optimize('txp_lang');
-
+    safe_optimize('txp_plugin');
+    safe_optimize('txp_lang');
 }
-
