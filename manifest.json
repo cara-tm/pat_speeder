@@ -1,7 +1,7 @@
 {
-    "version": "2.4",
-    "type": 1,
-    "order": 5,
+    "version": "2.5",
+    "type": "1",
+    "order": "5",
     "author": "Patrick LEFEVRE",
     "author_uri": "https:\/\/github.com\/cara-tm\/pat_speeder",
     "description": "Speed up your TXP websites!",

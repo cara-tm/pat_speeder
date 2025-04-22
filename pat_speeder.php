@@ -8,7 +8,7 @@
  * @type:         Admin + Public
  * @prefs:        prefs
  * @order:        5
- * @version:      2.4
+ * @version:      2.5
  * @license:      GPLv2
  */
 
@@ -76,20 +76,18 @@ function pat_speeder($atts)
 
 function pat_process($buffer, $gzip, $code, $compact)
 {
-	// Add a tag
-	$code .= 'fake-tag';
 	// Sanitize the lists: no spaces
-	$codes = preg_replace('/\s*/m', '', $code);
+	$codes = ($code ? '|'.preg_replace('/\s*/m', '', $code) : '');
 	// ... and no final comma. Convert into a pipes separated list
 	$codes = str_replace(',', '|', rtrim($codes, ','));
 	// Set the replacement mode
 	$compact = ($compact ? '' : ' ');
 
 	// Remove uncessary elements from the source document (especially: from 2 and more spaces between tags). But keep safe excluded tags
-	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea|'.$codes.')\b))*+)(?:<(?>textarea|'.$codes.')\b| \z))/u', $compact, $buffer);
+	$buffer = preg_replace('/(?imx)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!\/?(?:textarea'.$codes.')\b))*+)(?:<(?>textarea'.$codes.')\b| \z))/u', $compact, $buffer);
 	if (get_pref('pat_speeder_pref_old_comments') == 0 ) {
 		// Remove all comments except google ones
-		$buffer = preg_replace('/(<!--[^googleo]|\s?\/\*).*?(-->|\*\/)/s', '', $buffer);
+		$buffer = preg_replace('/(<!--|\s?\/\*).*?(-->|\*\/)/s', '', $buffer);
 	}
 
 	// Server side compression if available
@@ -122,8 +120,8 @@ function pat_process($buffer, $gzip, $code, $compact)
  * @param
  * @return Insert this plugin prefs into 'txp_prefs' table
  */
-function pat_speeder_lifecycle($event, $step) {
-
+function pat_speeder_lifecycle($event, $step)
+{
     $msg = '';
     $name = 'pat_speeder';
 
@@ -141,22 +139,18 @@ function pat_speeder_lifecycle($event, $step) {
             // Remove old plugin rows
             safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
             // Repair and optimize tables
-            safe_repair('txp_prefs');
-            safe_repair('txp_plugin');
-            safe_repair('txp_lang');
-            safe_optimize('txp_prefs');
-            safe_optimize('txp_plugin');
-            safe_optimize('txp_lang');
+            safe_repair('txp_prefs','txp_plugin','txp_lang');
+            safe_optimize('txp_prefs','txp_plugin','txp_lang');
             break;
-        case "disabled":
-            break;
-        case "installed":
-            $msg = gTxt('plugin_installed', array('{name}' => $name));
-            break;
-        case "deleted":
-            remove_pref(null, "pat_speeder");
-            _pat_speeder_cleanup();
-            $msg = gTxt('plugin_deleted', array('{name}' => $name));
+            case "disabled":
+                break;
+            case "installed":
+                $msg = gTxt('plugin_installed', array('{name}' => $name));
+                break;
+            case "deleted":
+                remove_pref(null, "pat_speeder");
+                _pat_speeder_cleanup();
+                $msg = gTxt('plugin_deleted', array('{name}' => $name));
             break;
     }
 
@@ -181,7 +175,6 @@ function pat_speeder_options_prefs_redirect()
  */
 function _pat_speeder_cleanup()
 {
-
 	$rows = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_enable_live_only', 'pat_speeder_pref_compact');
 	foreach ($rows as $val) {
 		safe_delete('txp_prefs', "name='".$val."'");
@@ -189,10 +182,6 @@ function _pat_speeder_cleanup()
 	safe_delete('txp_lang', "owner='pat_speeder'");
 	// Delete, repair and optimize
 	safe_delete('txp_lang', "owner='pat_speeder'");
-	safe_repair('txp_prefs');
-    safe_repair('txp_plugin');
-    safe_repair('txp_lang');
-    safe_optimize('txp_prefs');
-    safe_optimize('txp_plugin');
-    safe_optimize('txp_lang');
+	safe_repair('txp_prefs','txp_plugin','txp_lang');
+    safe_optimize('txp_prefs','txp_plugin','txp_lang');
 }

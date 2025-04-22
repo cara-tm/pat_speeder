@@ -1,18 +1,40 @@
-h1. Speed up your TXP websites! 🚀 "Plugin Prefs":./index.php?event=prefs#prefs_group_pat_speeder 
+h1. Speed up your TXP websites! 🚀 ("Plugin Prefs":./index.php?event=prefs#prefs_group_pat_speeder) 
 
-Have you ever seen the source code of the Google homepage? For speed reasons, Google serves its homepage as a single line of code. The benefit is a reduction in file size and bandwidth usage. Now we can do the same for our TXP websites.
+Initially inspired by strategies used by Google and Yahoo!, the pat_speeder plugin for Textpattern CMS compresses your pages into a single line of code before sending them to browsers.
 
-Just activate this plugin and your page templates will be rendered as a single line of code.
+The process is immediate. By removing tabs, line breaks, comments and unnecessary spaces (which are all absolutely not necessary for your site to display properly), your pages are accelerated. Speed ​​increases by up to 10-20%! Generally (observed results), Google Page Speed Insights scores are better (100/100, or close to it)!
 
-*Warning*: This plugin seems not to be compatible with some flash audio players (to be confirmed).
+pat_speeder is non-intrusive: your templates and CSS style sheets are not affected. You maintain your organization. Your code remains readable, as you designed it, and only for you. The effectiveness of pat_speeder benefits your visitors' experience.
 
-Furthermore, for a long time I thought to preserve paddings before and after each link ("a" tags) and I added a space between all HTML code within the compressed copy in order to keep visual appearances unchanged. But all these extra spaces are not parts of natural and well written text contents. It encourages you to add them before and after! Keep that in mind, write good content and gain 1.03% in compression (spaces between @<a>@ tags will be removed).
+Simple and easy to use, a single tag to instantly boost your websites.
 
-An additional preference is available for more compact compression with all spaces removed (Default: false).
+This plugin's settings depend on two independent options:
+
+* By the options available in "the plugin's preferences panel":?event=plugin&step=plugin_help&name=pat_speeder#plugin_help_section_plugin_preferences_panel (with precedence based on tag attributes on demand);
+* By its "tag attributes":?event=plugin&step=plugin_help&name=pat_speeder#plugin_help_section_attributes.
+
+Remember: regardless of your choices, you *must specify the mandatory @<txp:pat_speeder />@ tag into all your pages*.
+
+*Warning*: This plugin seems not to be compatible with some Flash audio players (to be confirmed; however, Flash is no more used).
+
+Additionally, to preserve the spaces before and after each link ("a" tags), spaces are kept between each HTML code to preserve the visual appearance. However, these extra spaces are not part of natural and well-written text content. Keep this in mind: write quality content and optimize compression (in particular, spaces between @<a>@ tags will be removed). In this context, an additional preference is available for "Compact Compression", which removes all spaces (default: "false"). In this case, it is recommended to manually add them before and after (*&amp;nbsp;*).
+
 
 h2. Test results
 
-According to Ruud's observations, this plugin results in a reduction of between 5% (for precompressed pages) and 6% (normal pages).
+According to Ruud's Benchmarks (emeritus Core Dev), this plugin results in a reduction of 5% (for pre-compressed pages) to 6% (for normal pages). Or even more according to the GTmetrix performance tool. In addition, it allows for better "Google Page Insights" scores (100/100 or close to). ✌️
+
+h2. Plugin Preferences panel
+
+After installation, go to your website preferences:
+
+* _Enable pat_speeder?_ Allows you to enable/stop rendering of this plugin on all your pages where its tag is used (not in case the @enable@ attribute is set to *1*);
+* _Enable GZIP compression with pat_speeder?_ Choose to activate the internal @GZIP@ compression if needed (you may set your @.htaccess@ file instead) only if the gzip attribute isn't set into this plugin tag;
+* _List of tags to protect from pat_speeder_ A comma separated list of tags to protect against the plugin throughout all the site. Default: @script, svg, pre, code@. Note: @textarea@ is included into the plugin;
+* _Enable extreme compression?_ This is a “compact mode” that removes all unnecessary spaces (to be precise: 2 or more) between all tags to return a smaller document in size. Bear in mind that your page and form markup must be cleanly written without additional spaces/tabs around tags. This can otherwise render in unexpected results such as text content directly adjacent to one another (e.g. a link running straight into text). As such, this setting is recommended only for advanced users.
+* _Keep all HTML/CSS/IE/Google comments?_ Set to Yes, this setting keeps all these elements (if you choose No, Google comments will be removed *but not its wrapped content*).
+
+*Note*: All preferences of this plugin can be overridden by the corresponding plugin attributes.
 
 h2. Usage
 
@@ -20,32 +42,32 @@ Add the following tag at the very top of your page templates:
 
 @<txp:pat_speeder />@
 
+Without any attributes, the plugin preferences take precedence.
+
 h2. Attributes
 
 This plugin has the following attributes:
 
-* @enable@ boolean: set "boolean" to 1 activate the plugin. Set to 0 disabled it. Default 1 (yes).
-* @gzip@ boolean (optional): server side gzip compression. Default: 1 (true).
-* @code@ (optional): a comma separated list of tags name on which do not apply compression. Default: @script,svg,pre,code@
-* @compact@ (optional): further reduction by removing all duplicate spaces. See note below.
+* @enable@ (boolean): set to *1* activate the plugin. Set to *0* disabled it. Default *1* (yes).
+(this attribute overwrite the corresponding plugin's preferences : usefull if you want select some pages unchanged)
+* @gzip@ (boolean) (optional): server side gzip compression. Default: *1* (true).
+(this attribute overwrite the corresponding plugin's preferences)
+* @code@ (string) (optional): a comma separated list of tags name on which do not apply compression. Default: @script,svg,pre,code@
+(this attribute overwrite the corresponding plugin's preferences)
+* @compact@ (boolean) (optional): further reduction by removing all duplicate spaces. See note in documentation).
+(this attribute overwrite the corresponding plugin's preferences
 
+*Note*: All these attributes override the corresponding preferences of this plugin on demand depending on individual pages.
+
+Advice: You may not need to keep your JavaScript unchanged: it is recommended to take advantage of specific compression tools to use optimized code in production.
 
 h2. Example
 
 @<txp:pat_speeder enable="0" /><!DOCTYPE ...@
 
-In this case, pat_speeder is'nt enable into this current page template.
+In this case, pat_speeder isn’t enabled into the current page template (even if the corresponding preference is set to Yes).
 
-
-h2. Preferences
-
-After installation, go to your website preferences:
-
-* _Enable pat_speeder?_ Allow you to stop this plugin rendering thougout all your pages where it is used (only if the @enable@ attibute is set on @1@);
-* _Enable GZIP compression with pat_speeder?_ Choose to activate the internal @GZIP@ compression if needed (you may set your @.htaccess@ file instead) only if the gzip attribute isn't set into this plugin tag;
-* _List of tags to protect from pat_speeder_ A comma separated list of tags to protect against the plugin throughout all the site. Default: @script, svg, pre, code@. Note: @textarea@ is included into the plugin;
-* _Enable extreme compression?_ This is a “compact mode” that removes all unnecessary spaces (to be precise: *2 or more*) between all tags to return a smaller document in size. Bear in mind that your page and form markup must be cleanly written without additional spaces around tags. This can otherwise result in unexpected results such as text content directly adjacent to one another (e.g. a link running straight into text). As such, this settings is recommended only for advanced users.
-
+*Note*: This tag should be placed at the very top of your pages.
 
 h2. Changelog
 
@@ -68,6 +90,9 @@ h2. Changelog
 * v1.1.1 on August, 25th 2018. Add option to only compress when the site production status is ‘live’.
 * v1.1.2 on November, 18th 2019. Correct tag registration.
 * v2.0 on March, 1st 2024. Global revision of the code.
+* v2.3 on January 5th 2025. Remove HTML and CSS comments but keep Google ones.
+* v2.4 on March 5th 2025. Improve removing comments and preeminence of the plugin tag on preferences settings.
+* v2.5 on April 19th 2025. Overall Improvements.
 
 See also the "forum thread":https://forum.textpattern.com/viewtopic.php?id=31345 for requests or help.
 
