@@ -134,13 +134,13 @@ function pat_speeder_lifecycle($event, $step)
                 set_pref("pat_speeder_pref_gzip", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 set_pref("pat_speeder_pref_tags", "script,svg,pre,code", 'pat_speeder', PREF_PLUGIN, 'input', 0);
                 set_pref("pat_speeder_pref_old_comments", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
-                $msg = 'pat_speeder enabled';
+                // Remove old plugin rows
+                safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
+                // Repair and optimize tables
+                safe_repair('txp_prefs','txp_plugin','txp_lang');
+                safe_optimize('txp_prefs','txp_plugin','txp_lang');
+			     $msg = 'pat_speeder enabled';
             }
-            // Remove old plugin rows
-            safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
-            // Repair and optimize tables
-            safe_repair('txp_prefs','txp_plugin','txp_lang');
-            safe_optimize('txp_prefs','txp_plugin','txp_lang');
             break;
             case "disabled":
                 break;
@@ -175,7 +175,7 @@ function pat_speeder_options_prefs_redirect()
  */
 function _pat_speeder_cleanup()
 {
-	$rows = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_enable_live_only', 'pat_speeder_pref_compact');
+	$rows = array('pat_speeder', 'pat_speeder_pref_enable', 'pat_speeder_pref_enable_live_only',  'pat_speeder_pref_compact', 'pat_speeder_pref_gzip', 'pat_speeder_pref_tags', 'pat_speeder_pref_old_comments', 'pat_speeder_pref_debug');
 	foreach ($rows as $val) {
 		safe_delete('txp_prefs', "name='".$val."'");
 	}
