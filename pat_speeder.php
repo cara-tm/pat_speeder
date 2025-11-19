@@ -136,9 +136,6 @@ function pat_speeder_lifecycle($event, $step)
                 set_pref("pat_speeder_pref_old_comments", "0", 'pat_speeder', PREF_PLUGIN, 'yesnoradio', 0);
                 // Remove old plugin rows
                 safe_delete('txp_prefs', "name = 'pat_speeder_enable, pat_speeder_gzip, pat_speeder_tags, pat_speeder_compact'");
-                // Repair and optimize tables
-                safe_repair('txp_prefs','txp_plugin','txp_lang');
-                safe_optimize('txp_prefs','txp_plugin','txp_lang');
 			     $msg = 'pat_speeder enabled';
             }
             break;
